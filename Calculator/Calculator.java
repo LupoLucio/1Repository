@@ -124,7 +124,6 @@ public class Calculator implements ActionListener {
 		
 		Calculator calc = new Calculator();
 		Matrix mat = new Matrix();
-
 	}*/
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -210,3 +209,4 @@ public class Calculator implements ActionListener {
 	}
 
 }
+

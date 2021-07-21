@@ -1,3 +1,5 @@
+
+
 public class Fraction{
 
     public int num;
@@ -7,27 +9,22 @@ public class Fraction{
 
         this.num = num;
         this.den = den;
+        riduciFraz();
     }
 
     public Fraction(Fraction fr){
 
         this.num = fr.num;
         this.den = fr.den;
+        riduciFraz();
     }
 
     public void riduciFraz(){
 
-        int min = Math.min(num,den);
+        int  MaxDiv = MCD(num,den);
 
-        for(int i=1;i <= min;i++){
-
-            if(num%i == 0 && den%i == 0){
-                num = num / i;
-                den = den / i;
-                i = 1;
-            }
-
-        }
+        num = num/MaxDiv;
+        den = den/MaxDiv;
 
 
 
@@ -39,7 +36,7 @@ public class Fraction{
         int risDen = this.den * fr.den;
 
         Fraction result = new Fraction(risNum,risDen);
-        result.riduciFraz();
+        
 
         return result;
     }
@@ -50,7 +47,7 @@ public class Fraction{
         int risDen = this.den * fr.den;
 
         Fraction result = new Fraction(risNum,risDen);
-        result.riduciFraz();
+        
 
         return result;
     }
@@ -61,7 +58,7 @@ public class Fraction{
         int risDen = this.den * fr.den;
 
         Fraction result = new Fraction(risNum,risDen);
-        result.riduciFraz();
+        
 
         return result;        
 
@@ -74,7 +71,7 @@ public class Fraction{
         int risDen = this.den * fr.num;
 
         Fraction result = new Fraction(risNum,risDen);
-        result.riduciFraz();
+       
 
         return result;        
 
@@ -82,9 +79,8 @@ public class Fraction{
     }
 
     public boolean checkZero(){
-        if(num == 0) return true;
-
-        return false;
+        
+        return num == 0;
     }
 
 
@@ -93,6 +89,16 @@ public class Fraction{
 
         return "("+this.num+","+this.den+")";
     }
+
+    public int MCD(int a, int b) {
+        int r = a % b;
+        if (r == 0) {
+        return b;
+        }
+        return MCD(b, r);
+        }
+
+
 
     
 
