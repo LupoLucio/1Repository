@@ -1,4 +1,6 @@
 import javax.swing.*;
+
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -18,9 +20,12 @@ public class Matrix extends Calculator {
   public JLabel scrittaRig;
   public JLabel scrittaCol;
 
+  public boolean isMat1On,isMat2On;
   public JFrame frame2;
 	public JButton back,add;
-	public JPanel panel2;
+  public JButton mat1,mat2;
+  public JButton rango,det;
+	public JTextField showRes;
 
   public int index = 0;
 
@@ -35,34 +40,59 @@ public class Matrix extends Calculator {
     frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame2.setSize(420, 600);
     frame2.setLayout(null);
-
     back = new JButton("back");
     back.addActionListener(this);
-    //back.setFont(myFont);;
+    back.setFont(new Font("Arial",Font.PLAIN,20));;
     back.setFocusable(false);
-    back.setBounds(0,0,100,100);
-    /*panel2 = new JPanel();
-    panel2.add(back);*/
-
-    add = new JButton("add");
+    back.setBounds(0,125,100,100);
+    mat1 = new JButton("mat1");
+    mat1.addActionListener(this);
+    mat1.setFont(new Font("Arial",Font.PLAIN,20));
+    mat1.setFocusable(false);
+    mat1.setBounds(0, 250, 100, 100);
+    mat2 = new JButton("mat2");
+    mat2.addActionListener(this);
+    mat2.setFont(new Font("Arial",Font.PLAIN,20));
+    mat2.setFocusable(false);
+    mat2.setBounds(0, 400, 100, 100);
+    rango = new JButton("rango");
+    rango.addActionListener(this);
+    rango.setFont(new Font("Arial",Font.PLAIN,20));
+    rango.setFocusable(false);
+    rango.setBounds(125, 250, 100, 100);
+    det = new JButton("det");
+    det.addActionListener(this);
+    det.setFont(new Font("Arial",Font.PLAIN,20));
+    det.setFocusable(false);
+    det.setBounds(225, 250, 100, 100);
+    add = new JButton("add");   
     add.addActionListener(this);
+    add.setFont(new Font("Arial",Font.PLAIN,20));
     add.setFocusable(true);
-    add.setBounds(125, 0,100, 100);
-
+    add.setBounds(125, 125,100, 100);
+    showRes = new JTextField();
+		showRes.setBounds(50,25,300,50);
+		showRes.setFont(myFont);
+		showRes.setEditable(false);
+    frame2.add(showRes);
     frame2.add(back);
     frame2.add(add);
     frame2.setVisible(false);
-
-
+    frame2.add(mat1);
+    frame2.add(mat2);
+    frame2.add(rango);
+    frame2.add(det);
+    isMat1On = false;
+    isMat2On = false;
 
     textfieldRig = new JTextField();
     textfieldRig.setVisible(false);
     textfieldRig.setBounds(25, 100, 300, 50);
-    textfieldRig.setFont(myFont);
+    textfieldRig.setFont(new Font("Arial",Font.PLAIN,20));
     textfieldCol = new JTextField();
     textfieldCol.setVisible(false);
     textfieldCol.setBounds(25, 250, 300, 50);
-    textfieldCol.setFont(myFont);
+    textfieldCol.setFont(new Font("Arial",Font.PLAIN,20));
     String rig = "inserisci numero di righe";
     String col = "inserisci numero di colonne";
     scrittaRig = new JLabel(rig);
@@ -97,7 +127,7 @@ public class Matrix extends Calculator {
     textfield3 = new JTextField();
     textfield3.setVisible(false);
     textfield3.setBounds(25, 100, 300, 50);
-    textfield3.setFont(myFont);
+    textfield3.setFont(new Font("Arial",Font.PLAIN,20));
     String s2 = "INDICAZIONI";
     indicazioni = new JLabel(s2);
     indicazioni.setBounds(25, 25, 300, 50);
@@ -144,7 +174,64 @@ public class Matrix extends Calculator {
       textfieldRig.setVisible(true);
       textfieldCol.setVisible(true);
      
-    }if(e.getSource() == backTemp){
+    }
+    if(e.getSource() == mat1){
+
+      if(isMat1On) {
+        isMat1On = false;
+        mat1.setBackground(det.getBackground());;
+      }else{
+        isMat1On = true;
+        isMat2On = false;
+        mat1.setBackground(Color.BLACK);
+        mat2.setBackground(det.getBackground());
+      }
+
+    }
+    if(e.getSource() == det && isMat1On && index>0){
+
+      String result = memory[0].laplace()+"";
+      showRes.setText(result);
+
+    }
+
+   if(e.getSource() == rango && isMat1On && index>0){
+
+      String result = memory[0].rango()+"";
+      showRes.setText(result);
+
+    }
+    if(e.getSource() == mat2){
+
+      if(isMat2On) {
+        isMat2On = false;
+        mat2.setBackground(det.getBackground());
+      }else{
+        isMat2On = true;
+        isMat1On = false;
+        mat2.setBackground(Color.BLACK);
+        mat1.setBackground(det.getBackground());;
+        
+      }
+
+    }
+
+    if(e.getSource() == det && isMat2On && index>1){
+
+      String result = memory[1].laplace()+"";
+      showRes.setText(result);
+
+    }
+
+   if(e.getSource() == rango && isMat2On && index>1){
+
+      String result = memory[1].rango()+"";
+      showRes.setText(result);
+
+    }
+
+    
+    if(e.getSource() == backTemp){
 
       tempFrame.setVisible(false);
       frame2.setVisible(true);

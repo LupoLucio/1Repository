@@ -21,7 +21,7 @@ public class Fraction{
 
     public void riduciFraz(){
 
-        int  MaxDiv = MCD(num,den);
+        int  MaxDiv = MCD(den,num);
 
         num = num/MaxDiv;
         den = den/MaxDiv;
@@ -91,6 +91,11 @@ public class Fraction{
     }
 
     public static int MCD(int a, int b) {
+
+        if(a == 0 || b == 0){
+            return 1;
+        }
+
         int r = a % b;
         if (r == 0) {
         return b;

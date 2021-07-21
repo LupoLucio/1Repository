@@ -185,11 +185,11 @@ public class Matrice {
 
         for(int i = 0; i < width - 1; i++){
             for(int k = i;k < height -1; k++){
-                if(out[i][i].checkZero()){
+                if(out[i][i].isZero()){
 
                     for(int l = i + 1; l< height;l++){
 
-                        if(!out[l][i].checkZero()){
+                        if(!out[l][i].isZero()){
                             swapRighe(l,k);
                             done = true;
                             break;
@@ -239,7 +239,7 @@ public class Matrice {
         for(int i=0;i<matrix.length;i++){
             bol = true;
             for(int j=0;j<matrix[0].length;j++){
-                if(matrix[i][j].checkZero()){
+                if(!matrix[i][j].isZero()){
                     bol = false;
                 }
 
