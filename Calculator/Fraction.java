@@ -2,8 +2,8 @@
 
 public class Fraction{
 
-    public int num;
-    public int den;
+    private int num;
+    private int den;
 
     public Fraction(int num,int den){
 
@@ -90,7 +90,7 @@ public class Fraction{
         return "("+this.num+","+this.den+")";
     }
 
-    public int MCD(int a, int b) {
+    public static int MCD(int a, int b) {
         int r = a % b;
         if (r == 0) {
         return b;
