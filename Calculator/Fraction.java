@@ -78,7 +78,7 @@ public class Fraction{
 
     }
 
-    public boolean checkZero(){
+    public boolean isZero(){
         
         return num == 0;
     }
