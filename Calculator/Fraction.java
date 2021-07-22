@@ -87,7 +87,7 @@ public class Fraction{
 
     public String toString(){
 
-        return "("+this.num+","+this.den+")";
+        return "("+this.num+"/"+this.den+")";
     }
 
     public static int MCD(int a, int b) {

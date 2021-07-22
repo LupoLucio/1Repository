@@ -1,31 +1,37 @@
 public class Matrice {
     
-    public int height,width;
-    public Fraction[][] mat;
+    private int cols,rows;
+    private Fraction[][] mat;
 
-    public Matrice(int height,int width){
+    public Matrice(int cols,int rows){
 
-        this.height = height;
-        this.width = width;
+        if(cols < 1 || rows < 1) throw new IllegalArgumentException();
+
+        this.cols = cols;
+        this.rows = rows;
         
-        mat = new Fraction[height][width];
+        mat = new Fraction[cols][rows];
+        this.setTo0();
 
     }
     public Matrice(Fraction[][] matrice){
-        this.height = matrice.length;
-        this.width = matrice[0].length;
+
+        this.cols = matrice.length;
+        this.rows = matrice[0].length;
         
         mat = matrice;
+        this.setTo0();
 
     }
     public Matrice(int[][] matrice){
-        this.height = matrice.length;
-        this.width = matrice[0].length;
-        
-        Fraction[][] matFr = new Fraction[this.height][this.width];
 
-        for(int i=0;i<height;i++){
-            for(int j=0;j<width;j++){
+        this.cols = matrice.length;
+        this.rows = matrice[0].length;
+        
+        Fraction[][] matFr = new Fraction[this.cols][this.rows];
+
+        for(int i=0;i<cols;i++){
+            for(int j=0;j<rows;j++){
                 Fraction fr = new Fraction(matrice[i][j],1);
                 matFr[i][j] = fr;
             }
@@ -33,8 +39,8 @@ public class Matrice {
         this.mat = matFr;
     }
     public void setTo0(){
-        for(int i=0;i<height;i++){
-            for(int j=0;j<width;j++){
+        for(int i=0;i<cols;i++){
+            for(int j=0;j<rows;j++){
                 mat[i][j] = new Fraction(0,1);
             }
         }
@@ -44,18 +50,18 @@ public class Matrice {
         this.mat[i][j] = new Fraction(fr);
 
     }
-    public Fraction outFraction(int i,int j){
+    public Fraction getFraction(int i,int j){
         return this.mat[i][j];
     }
     public Matrice somma(Matrice matrice) {
 
-       /* if(matrice.height != this.height || matrice.width!= this.width){
+       /* if(matrice.cols != this.cols || matrice.rows!= this.rows){
             throw new IllegalAccessException("matrici con dimensioni diverse");
         }*/
 
-        Matrice result = new Matrice(this.height,this.width);
-        for(int i=0;i<height;i++){
-            for(int j=0;j<width;j++){
+        Matrice result = new Matrice(this.cols,this.rows);
+        for(int i=0;i<cols;i++){
+            for(int j=0;j<rows;j++){
                 sommaFraz(matrice, result, i, j);
             }
         }
@@ -67,13 +73,13 @@ public class Matrice {
     public Matrice differenza(Matrice matrice) throws IllegalAccessException{
 
 
-        /*if(matrice.height != this.height || matrice.width!= this.width){
+        /*if(matrice.cols != this.cols || matrice.rows!= this.rows){
             throw new IllegalAccessException("matrici con dimensioni diverse");
         }*/
 
-        Matrice result = new Matrice(this.height,this.width);
-        for(int i=0;i<height;i++){
-            for(int j=0;j<width;j++){
+        Matrice result = new Matrice(this.cols,this.rows);
+        for(int i=0;i<cols;i++){
+            for(int j=0;j<rows;j++){
                 sottraiFraz(matrice, result, i, j);
             }
         }
@@ -82,22 +88,22 @@ public class Matrice {
     }
 
     private void sommaFraz(Matrice matrice, Matrice result, int i, int j) {
-        result.setFraction(matrice.outFraction(i, j).somma(this.outFraction(i, j)),i,j);
+        result.setFraction(matrice.getFraction(i, j).somma(this.getFraction(i, j)),i,j);
     }
     private void sottraiFraz(Matrice matrice, Matrice result, int i, int j) {
-        result.setFraction(matrice.outFraction(i, j).differenza(this.outFraction(i, j)),i,j);
+        result.setFraction(matrice.getFraction(i, j).differenza(this.getFraction(i, j)),i,j);
     }
 
 
     public Matrice prodotto(Matrice matrice){
 
-        Matrice result = new Matrice(this.height,this.width);
+        Matrice result = new Matrice(this.cols,this.rows);
         
         Fraction sum = new Fraction(0,1);
-        for(int i = 0; i < height; i++){
-            for(int j = 0;j < height; j++){
-                for(int k = 0;k < width;k++){
-                    Fraction fr = this.outFraction(i, k).prodotto(matrice.outFraction(k, j));
+        for(int i = 0; i < cols; i++){
+            for(int j = 0;j < cols; j++){
+                for(int k = 0;k < rows;k++){
+                    Fraction fr = this.getFraction(i, k).prodotto(matrice.getFraction(k, j));
                     sum = sum.somma(fr);
                    
                 }
@@ -112,16 +118,16 @@ public class Matrice {
 
     public Fraction laplace(){
 
-        if(width != height){
+        if(rows != cols){
             throw new IllegalArgumentException("matrice non quadrata");
         }
 
-        if(width == 1){
+        if(rows == 1){
             return mat[0][0];
         }
 
         Fraction sum = new Fraction(0,1);
-        for(int i=0;i<width;i++){
+        for(int i=0;i<rows;i++){
 
             Fraction f = new Fraction((int) Math.pow(-1,i),1).prodotto(mat[0][i])
             .prodotto(rimozionePrimaRigaColonnaLaplace(i).laplace());
@@ -133,10 +139,10 @@ public class Matrice {
 
     private Matrice rimozionePrimaRigaColonnaLaplace(int index){
 
-        Fraction[][] temp = new Fraction[height-1][width-1];
-        for(int i=1;i<width;i++){
+        Fraction[][] temp = new Fraction[cols-1][rows-1];
+        for(int i=1;i<rows;i++){
             int c = 0;
-            for(int j=0;j<width;j++){
+            for(int j=0;j<rows;j++){
                 if(j == index) continue;
                 temp[i-1][c] = mat[i][j];
                 c++;
@@ -146,14 +152,14 @@ public class Matrice {
         return out;
     }
 
-    public void swapRighe(int pos1,int pos2){
+    public void swapRighe(int pos1,int pos2,Fraction[][] mat){
 
-        Fraction[] vett = new Fraction[width];
+        Fraction[] vett = new Fraction[rows];
 
-        for(int i=0;i<width;i++){
+        for(int i=0;i<rows;i++){
             vett[i] = mat[pos2][i];
         }
-        for(int i=0;i<width;i++){
+        for(int i=0;i<rows;i++){
             mat[pos2][i] = mat[pos1][i];
             mat[pos1][i] = vett[i];
         }
@@ -161,12 +167,12 @@ public class Matrice {
     }
     public void swapColonne(int pos1,int pos2){
 
-        Fraction[] vett = new Fraction[width];
+        Fraction[] vett = new Fraction[rows];
 
-        for(int i=0;i<width;i++){
+        for(int i=0;i<rows;i++){
             vett[i] = mat[i][pos2];
         }
-        for(int i=0;i<width;i++){
+        for(int i=0;i<rows;i++){
             mat[i][pos2] = mat[i][pos1];
             mat[i][pos1] = vett[i];
         }
@@ -174,42 +180,49 @@ public class Matrice {
     }
     public Fraction[][] Scala(){
 
-        Fraction[][] out = new Fraction[height][width];
-        for(int i=0;i<height;i++){
-            for(int j=0;j<width;j++){
+        Fraction[][] out = new Fraction[cols][rows];
+        for(int i=0;i<cols;i++){
+            for(int j=0;j<rows;j++){
                 out[i][j] = mat[i][j];
             }
         }
 
         boolean done = false;
 
-        for(int i = 0; i < width - 1; i++){
-            for(int k = i;k < height -1; k++){
+        for(int i = 0; i < rows - 1; i++){
+            for(int k = i;k < cols -1; k++){
                 if(out[i][i].isZero()){
 
-                    for(int l = i + 1; l< height;l++){
+                    for(int l = i + 1; l < cols;l++){
 
                         if(!out[l][i].isZero()){
-                            swapRighe(l,k);
+                            swapRighe(l,i,out);
+                            System.out.println("swap");
                             done = true;
                             break;
                         }
 
                     }
-                    if(!done){
+                    /*if(!done){
                         i++;
-                    }
+                    }*/
                 }
                    
-                if((k+1) != i){
+                if(!done){
                     sottrazRighe(k+1,i,i,out);
                     }
 
-                if(!done && i >= 1){
+                /*if(!done && i >= 1){
                     sottrazRighe(k+1,i-1,i,out);
+                    }*/
+
+                    for(int l = 0;l < out.length; l++){
+                        for(int o = 0; o<out.length; o++){
+                            System.out.print(out[l][o].toString()+" ");
+                        }
+                        System.out.println(" ");
                     }
 
-                
 
             }
         }
@@ -233,18 +246,20 @@ public class Matrice {
     public int rango(){
 
         int nul = 0;
-        boolean bol = true;
+        boolean nullità = true;
         Fraction[][] matrix = this.Scala();
 
+  
+
         for(int i=0;i<matrix.length;i++){
-            bol = true;
+            nullità = true;
             for(int j=0;j<matrix[0].length;j++){
                 if(!matrix[i][j].isZero()){
-                    bol = false;
+                    nullità = false;
                 }
 
             }
-            if(bol == true){
+            if(nullità == true){
                 nul++;
             }
         }
@@ -256,8 +271,8 @@ public class Matrice {
 
         String s = "";
 
-        for(int i = 0; i < height; i++){
-            for(int j = 0;j < width;j++){
+        for(int i = 0; i < cols; i++){
+            for(int j = 0;j < rows;j++){
                 s += mat[i][j].toString()+" ";
             }
             s += "\n";

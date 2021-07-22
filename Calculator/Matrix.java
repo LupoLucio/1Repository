@@ -1,6 +1,4 @@
 import javax.swing.*;
-
-
 import java.awt.*;
 import java.awt.event.*;
 
@@ -27,6 +25,8 @@ public class Matrix extends Calculator {
   public JButton rango,det;
 	public JTextField showRes;
 
+  
+
   public int index = 0;
 
   Matrice[] memory = new Matrice[3];
@@ -44,32 +44,32 @@ public class Matrix extends Calculator {
     back.addActionListener(this);
     back.setFont(new Font("Arial",Font.PLAIN,20));;
     back.setFocusable(false);
-    back.setBounds(0,125,100,100);
+    back.setBounds(50,125,100,100);
     mat1 = new JButton("mat1");
     mat1.addActionListener(this);
     mat1.setFont(new Font("Arial",Font.PLAIN,20));
     mat1.setFocusable(false);
-    mat1.setBounds(0, 250, 100, 100);
+    mat1.setBounds(50, 250, 100, 100);
     mat2 = new JButton("mat2");
     mat2.addActionListener(this);
     mat2.setFont(new Font("Arial",Font.PLAIN,20));
     mat2.setFocusable(false);
-    mat2.setBounds(0, 400, 100, 100);
+    mat2.setBounds(175, 250, 100, 100);
     rango = new JButton("rango");
     rango.addActionListener(this);
     rango.setFont(new Font("Arial",Font.PLAIN,20));
     rango.setFocusable(false);
-    rango.setBounds(125, 250, 100, 100);
+    rango.setBounds(50, 375, 100, 100);
     det = new JButton("det");
     det.addActionListener(this);
     det.setFont(new Font("Arial",Font.PLAIN,20));
     det.setFocusable(false);
-    det.setBounds(225, 250, 100, 100);
+    det.setBounds(175, 375, 100, 100);
     add = new JButton("add");   
     add.addActionListener(this);
     add.setFont(new Font("Arial",Font.PLAIN,20));
     add.setFocusable(true);
-    add.setBounds(125, 125,100, 100);
+    add.setBounds(175, 125,100, 100);
     showRes = new JTextField();
 		showRes.setBounds(50,25,300,50);
 		showRes.setFont(myFont);
