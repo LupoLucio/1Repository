@@ -25,6 +25,8 @@ public class Matrix extends Calculator {
   public JButton rango,det;
 	public JTextField showRes;
 
+  public JPanel showMatPanel;
+  public JButton showMat;
   
 
   public int index = 0;
@@ -45,6 +47,11 @@ public class Matrix extends Calculator {
     back.setFont(new Font("Arial",Font.PLAIN,20));;
     back.setFocusable(false);
     back.setBounds(50,125,100,100);
+    showMat = new JButton("show");
+    showMat.addActionListener(this);
+    showMat.setFont(new Font("Arial",Font.PLAIN,20));;
+    showMat.setFocusable(false);
+    showMat.setBounds(300,375,100,100);
     mat1 = new JButton("mat1");
     mat1.addActionListener(this);
     mat1.setFont(new Font("Arial",Font.PLAIN,20));
@@ -82,8 +89,12 @@ public class Matrix extends Calculator {
     frame2.add(mat2);
     frame2.add(rango);
     frame2.add(det);
+    frame2.add(showMat);
     isMat1On = false;
     isMat2On = false;
+
+
+
 
     textfieldRig = new JTextField();
     textfieldRig.setVisible(false);
@@ -227,6 +238,41 @@ public class Matrix extends Calculator {
 
       String result = memory[1].rango()+"";
       showRes.setText(result);
+
+    }
+    if(e.getSource() == showMat && isMat1On && index>0){
+
+      JFrame showMatFrame = new JFrame();
+     
+      showMatFrame.setSize(400,400);
+      showMatPanel = new JPanel(new GridLayout(memoryPair[0].getRiga(),memoryPair[0].getColonna(),10,10));
+
+      for(int i=0;i<memoryPair[0].riga;i++){
+        for(int j=0;j<memoryPair[0].colonna;j++){
+          JButton showMatButton = new JButton(memory[0].getFraction(i, j)+"");
+          showMatPanel.add(showMatButton);
+        }
+      }
+     showMatFrame.add(showMatPanel);
+     showMatFrame.setVisible(true);
+
+    }
+
+    if(e.getSource() == showMat && isMat2On && index>1){
+
+      JFrame showMatFrame = new JFrame();
+     
+      showMatFrame.setSize(400,400);
+      showMatPanel = new JPanel(new GridLayout(memoryPair[1].getRiga(),memoryPair[1].getColonna(),10,10));
+
+      for(int i=0;i<memoryPair[1].riga;i++){
+        for(int j=0;j<memoryPair[1].colonna;j++){
+          JButton showMatButton = new JButton(memory[1].getFraction(i, j)+"");
+          showMatPanel.add(showMatButton);
+        }
+      }
+     showMatFrame.add(showMatPanel);
+     showMatFrame.setVisible(true);
 
     }
 
