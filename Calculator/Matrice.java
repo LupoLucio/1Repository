@@ -208,12 +208,11 @@ public class Matrice {
                         }
 
                     }
-                    /*if(!done){
-                        i++;
-                    }*/
+                    
                 }
-                   
-                if(!done){
+                if(!done && out[i][i].isZero()){
+                    i++;
+                }else if(!done){
                     sottrazRighe(k+1,i,i,out);
                     }
 

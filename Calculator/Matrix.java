@@ -414,7 +414,7 @@ public class Matrix extends Calculator {
       String numeri = textfield3.getText();
 
       inFrame.setVisible(false);
-      tempFrame.setVisible(true);
+      frame2.setVisible(true);
       // memotrizzaee nella metrice il contenuto della
       // stringa del textfield3
       if(isMat1On){
