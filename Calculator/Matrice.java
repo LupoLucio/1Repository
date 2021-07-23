@@ -20,7 +20,7 @@ public class Matrice {
         this.rows = matrice[0].length;
         
         mat = matrice;
-        this.setTo0();
+       
 
     }
     public Matrice(int[][] matrice){
@@ -70,7 +70,7 @@ public class Matrice {
 
     }
 
-    public Matrice differenza(Matrice matrice) throws IllegalAccessException{
+    public Matrice differenza(Matrice matrice) throws IllegalArgumentException{
 
 
         /*if(matrice.cols != this.cols || matrice.rows!= this.rows){
@@ -97,7 +97,10 @@ public class Matrice {
 
     public Matrice prodotto(Matrice matrice){
 
-        Matrice result = new Matrice(this.cols,this.rows);
+        if(this.rows != matrice.getCols()){
+            throw new IllegalArgumentException();
+        }
+        Matrice result = new Matrice(this.cols,matrice.getRows());
         
         Fraction sum = new Fraction(0,1);
         for(int i = 0; i < cols; i++){
@@ -133,7 +136,9 @@ public class Matrice {
             .prodotto(rimozionePrimaRigaColonnaLaplace(i).laplace());
 
             sum = sum.somma(f);
+            System.out.println(sum);
         }
+        
         return sum;
     }
 
@@ -265,6 +270,13 @@ public class Matrice {
         }
 
         return matrix.length-nul;
+    }
+
+    public int getRows(){
+        return rows;
+    }
+    public int getCols(){
+        return cols;
     }
 
     public String toString(){

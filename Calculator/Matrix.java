@@ -18,11 +18,12 @@ public class Matrix extends Calculator {
   public JLabel scrittaRig;
   public JLabel scrittaCol;
 
-  public boolean isMat1On,isMat2On;
+  public boolean isMat1On,isMat2On,isResOn;
   public JFrame frame2;
 	public JButton back,add;
-  public JButton mat1,mat2;
+  public JButton mat1,mat2,matRes;
   public JButton rango,det;
+  public JButton somma,diff,molt;
 	public JTextField showRes;
 
   public JPanel showMatPanel;
@@ -40,43 +41,64 @@ public class Matrix extends Calculator {
     frame2 = new JFrame("Matrix");
 
     frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame2.setSize(420, 600);
+    frame2.setSize(440, 620);
     frame2.setLayout(null);
     back = new JButton("back");
     back.addActionListener(this);
     back.setFont(new Font("Arial",Font.PLAIN,20));;
     back.setFocusable(false);
-    back.setBounds(50,125,100,100);
+    back.setBounds(50,100,100,100);
     showMat = new JButton("show");
     showMat.addActionListener(this);
     showMat.setFont(new Font("Arial",Font.PLAIN,20));;
     showMat.setFocusable(false);
-    showMat.setBounds(300,375,100,100);
+    showMat.setBounds(300,350,100,100);
     mat1 = new JButton("mat1");
     mat1.addActionListener(this);
     mat1.setFont(new Font("Arial",Font.PLAIN,20));
     mat1.setFocusable(false);
-    mat1.setBounds(50, 250, 100, 100);
+    mat1.setBounds(50, 225, 100, 100);
     mat2 = new JButton("mat2");
     mat2.addActionListener(this);
     mat2.setFont(new Font("Arial",Font.PLAIN,20));
     mat2.setFocusable(false);
-    mat2.setBounds(175, 250, 100, 100);
+    mat2.setBounds(175, 225, 100, 100);
+    matRes = new JButton("Res");
+    matRes.addActionListener(this);
+    matRes.setFont(new Font("Arial",Font.PLAIN,20));
+    matRes.setFocusable(false);
+    matRes.setBounds(300, 225, 100, 100);
     rango = new JButton("rango");
     rango.addActionListener(this);
     rango.setFont(new Font("Arial",Font.PLAIN,20));
     rango.setFocusable(false);
-    rango.setBounds(50, 375, 100, 100);
+    rango.setBounds(50, 350, 100, 100);
     det = new JButton("det");
     det.addActionListener(this);
     det.setFont(new Font("Arial",Font.PLAIN,20));
     det.setFocusable(false);
-    det.setBounds(175, 375, 100, 100);
-    add = new JButton("add");   
+    det.setBounds(175, 350, 100, 100);
+    add = new JButton("edit");   
     add.addActionListener(this);
     add.setFont(new Font("Arial",Font.PLAIN,20));
     add.setFocusable(true);
-    add.setBounds(175, 125,100, 100);
+    add.setBounds(175, 100,100, 100);
+    somma = new JButton("+");
+    somma.addActionListener(this);
+    somma.setFont(new Font("Arial",Font.PLAIN,20));
+    somma.setFocusable(false);
+    somma.setBounds(50, 475, 100, 100);
+    diff = new JButton("-");
+    diff.addActionListener(this);
+    diff.setFont(new Font("Arial",Font.PLAIN,20));
+    diff.setFocusable(false);
+    diff.setBounds(175, 475, 100, 100);
+    molt = new JButton("*");
+    molt.addActionListener(this);
+    molt.setFont(new Font("Arial",Font.PLAIN,20));
+    molt.setFocusable(false);
+    molt.setBounds(300, 475, 100, 100);
+
     showRes = new JTextField();
 		showRes.setBounds(50,25,300,50);
 		showRes.setFont(myFont);
@@ -90,9 +112,13 @@ public class Matrix extends Calculator {
     frame2.add(rango);
     frame2.add(det);
     frame2.add(showMat);
+    frame2.add(matRes);
+    frame2.add(somma);
+    frame2.add(diff);
+    frame2.add(molt);
     isMat1On = false;
     isMat2On = false;
-
+    isResOn = false;
 
 
 
@@ -177,7 +203,7 @@ public class Matrix extends Calculator {
 			frame.setVisible(true);
 		}
     
-    if(e.getSource() == add){
+    if(e.getSource() == add && (isMat1On || isMat2On)){
       
       //Matrice mat = new Matrice();
       tempFrame.setVisible(true);
@@ -194,24 +220,14 @@ public class Matrix extends Calculator {
       }else{
         isMat1On = true;
         isMat2On = false;
+        isResOn = false;
         mat1.setBackground(Color.BLACK);
         mat2.setBackground(det.getBackground());
+        matRes.setBackground(det.getBackground());
       }
 
     }
-    if(e.getSource() == det && isMat1On && index>0){
 
-      String result = memory[0].laplace()+"";
-      showRes.setText(result);
-
-    }
-
-   if(e.getSource() == rango && isMat1On && index>0){
-
-      String result = memory[0].rango()+"";
-      showRes.setText(result);
-
-    }
     if(e.getSource() == mat2){
 
       if(isMat2On) {
@@ -220,27 +236,63 @@ public class Matrix extends Calculator {
       }else{
         isMat2On = true;
         isMat1On = false;
+        isResOn = false;
         mat2.setBackground(Color.BLACK);
         mat1.setBackground(det.getBackground());;
+        matRes.setBackground(det.getBackground());
         
       }
 
     }
 
-    if(e.getSource() == det && isMat2On && index>1){
+    if(e.getSource() == matRes){
+
+      if(isResOn){
+        isResOn = false;
+        matRes.setBackground(det.getBackground());
+      }else{
+        isResOn = true;
+        isMat1On = false;
+        isMat2On = false;
+
+        matRes.setBackground(Color.BLACK);
+        mat1.setBackground(det.getBackground());
+        mat2.setBackground(det.getBackground());
+
+      }
+
+
+    }
+
+    if(e.getSource() == det && isMat1On){
+
+      String result = memory[0].laplace()+"";
+      showRes.setText(result);
+
+    }
+
+   if(e.getSource() == rango && isMat1On ){
+
+      String result = memory[0].rango()+"";
+      showRes.setText(result);
+
+    }
+
+
+    if(e.getSource() == det && isMat2On ){
 
       String result = memory[1].laplace()+"";
       showRes.setText(result);
 
     }
 
-   if(e.getSource() == rango && isMat2On && index>1){
+   if(e.getSource() == rango && isMat2On){
 
       String result = memory[1].rango()+"";
       showRes.setText(result);
 
     }
-    if(e.getSource() == showMat && isMat1On && index>0){
+    if(e.getSource() == showMat && isMat1On ){
 
       JFrame showMatFrame = new JFrame();
      
@@ -258,7 +310,7 @@ public class Matrix extends Calculator {
 
     }
 
-    if(e.getSource() == showMat && isMat2On && index>1){
+    if(e.getSource() == showMat && isMat2On ){
 
       JFrame showMatFrame = new JFrame();
      
@@ -276,6 +328,53 @@ public class Matrix extends Calculator {
 
     }
 
+    if(e.getSource() == showMat && isResOn ){
+
+      JFrame showMatFrame = new JFrame();
+     
+      showMatFrame.setSize(400,400);
+      showMatPanel = new JPanel(new GridLayout(memoryPair[2].getRiga(),memoryPair[2].getColonna(),10,10));
+
+      for(int i=0;i<memoryPair[2].riga;i++){
+        for(int j=0;j<memoryPair[2].colonna;j++){
+          JButton showMatButton = new JButton(memory[2].getFraction(i, j)+"");
+          showMatPanel.add(showMatButton);
+        }
+      }
+     showMatFrame.add(showMatPanel);
+     showMatFrame.setVisible(true);
+
+    }
+
+
+
+    if(e.getSource() == somma){
+      try{
+      memory[2] = memory[0].somma(memory[1]);
+      memoryPair[2] = new Pair(memory[2].getRows(),memory[2].getCols());
+      }catch(IllegalArgumentException exc){
+        showRes.setText("eccezzione");
+      }
+    }
+
+    if(e.getSource() == diff){
+      try{
+      memory[2] = memory[0].differenza(memory[1]);
+      memoryPair[2] = new Pair(memory[2].getRows(),memory[2].getCols());
+      }catch(IllegalArgumentException exc){
+        showRes.setText("eccezzione");
+      }
+    }
+
+    if(e.getSource() == molt){
+      try{
+      memory[2] = memory[0].prodotto(memory[1]);
+      memoryPair[2] = new Pair(memory[2].getRows(),memory[2].getCols());
+      }catch(IllegalArgumentException exc){
+        showRes.setText("eccezzione");
+      }
+    }
+
     
     if(e.getSource() == backTemp){
 
@@ -291,8 +390,11 @@ public class Matrix extends Calculator {
       int righe = Integer.parseInt(textfieldRig.getText());
       int colonne = Integer.parseInt(textfieldCol.getText());
 
-      memoryPair[index] = new Pair(righe,colonne);
-
+      if(isMat1On){
+      memoryPair[0] = new Pair(righe,colonne);
+      }else if(isMat2On){
+        memoryPair[1] = new Pair(righe,colonne);
+      }
      
 
 
@@ -315,11 +417,15 @@ public class Matrix extends Calculator {
       tempFrame.setVisible(true);
       // memotrizzaee nella metrice il contenuto della
       // stringa del textfield3
-      inizializzaMat(memory, numeri, memoryPair[index].getRiga(), memoryPair[index].getColonna(),index);
-      System.out.println(memory[index].toString());
+      if(isMat1On){
+      inizializzaMat(memory, numeri, memoryPair[0].getRiga(), memoryPair[0].getColonna(),0);
+      }else if(isMat2On){
+        inizializzaMat(memory, numeri, memoryPair[1].getRiga(), memoryPair[1].getColonna(),1);
+      }
 
-      index++;
-      System.out.println("indice : "+index);
+
+      
+   
     }
 
 
