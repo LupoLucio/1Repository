@@ -100,7 +100,7 @@ public class Matrice {
         if(this.rows != matrice.getCols()){
             throw new IllegalArgumentException();
         }
-        Matrice result = new Matrice(this.cols,matrice.getRows());
+        Matrice result = new Matrice(this.getCols(),this.getRows());
         
         Fraction sum = new Fraction(0,1);
         for(int i = 0; i < cols; i++){
@@ -117,6 +117,7 @@ public class Matrice {
 
         return result;
     }
+
 
 
     public Fraction laplace(){
@@ -157,6 +158,37 @@ public class Matrice {
         return out;
     }
 
+    private Matrice rimozioneRigaColonna(int rig,int col){
+
+        Fraction[][] temp = new Fraction[cols-1][rows-1];
+
+        int a = 0;
+        int b = 0;
+
+        for(int i=0;i<rows;i++){
+            for(int j=0;j<cols;j++){
+
+                if(i != rig & j != col){
+
+                    if(b<cols-1){
+                        temp[a][b] = mat[i][j];
+                        b++;
+                    }else{
+                        b = 0;
+                        a++;
+                        temp[a][b] = mat[i][j];
+                        b++;
+                    }
+                    
+                }
+
+            }
+        }
+
+        Matrice matTemp =  new Matrice(temp);
+        return matTemp;
+    }
+
     public void swapRighe(int pos1,int pos2,Fraction[][] mat){
 
         Fraction[] vett = new Fraction[rows];
@@ -182,6 +214,20 @@ public class Matrice {
             mat[i][pos1] = vett[i];
         }
  
+    }
+
+    public Matrice trasposta(Matrice generica){
+
+        Matrice trasp = new Matrice(rows,cols);
+
+        for(int i = 0; i < rows; i++){
+            for(int j = 0;j < cols; j++){
+                trasp.setFraction(generica.getFraction(i, j), j, i);
+            }
+        }
+
+        return trasp;
+
     }
     public Fraction[][] Scala(){
 
@@ -269,6 +315,41 @@ public class Matrice {
         }
 
         return matrix.length-nul;
+    }
+
+    public Matrice matInv(){
+
+        if(rows != cols){
+            throw new IllegalArgumentException();
+        }
+
+        Fraction det = new Fraction(this.laplace());
+
+        if(det.isZero()){
+            throw new IllegalArgumentException();
+        }
+
+        // costruisco la matrice dei complementi algebrici
+
+        Matrice compAlg = new Matrice(this.cols,this.rows);
+
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < cols; j++){
+
+                Fraction f = new Fraction((int) Math.pow(-1,i+j),1)
+                .prodotto(rimozioneRigaColonna(i,j).laplace());
+
+                f = f.quoziente(this.laplace());
+
+                compAlg.setFraction(f,i,j);
+            }
+
+        }
+
+        Matrice inv = trasposta(compAlg);
+        return inv;
+
+
     }
 
     public int getRows(){

@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+
+/* bottoni mat1 e mat2 servono per salare 2 matrici, il bottone res per memorizzare operazione su una singola matrice
+o su entrambe, il pulsante show mostra una delle 3 matrici cosa ha memorizzato in quel momento */ 
 public class Matrix extends Calculator {
     
   public JFrame inFrame;
@@ -24,8 +27,8 @@ public class Matrix extends Calculator {
   public JButton mat1,mat2,matRes;
   public JButton rango,det;
   public JButton somma,diff,molt;
+  public JButton inv;
 	public JTextField showRes;
-
   public JPanel showMatPanel;
   public JButton showMat;
   
@@ -39,7 +42,6 @@ public class Matrix extends Calculator {
      // Calculator calc = new Calculator();
 
     frame2 = new JFrame("Matrix");
-
     frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame2.setSize(440, 620);
     frame2.setLayout(null);
@@ -98,7 +100,11 @@ public class Matrix extends Calculator {
     molt.setFont(new Font("Arial",Font.PLAIN,20));
     molt.setFocusable(false);
     molt.setBounds(300, 475, 100, 100);
-
+    inv = new JButton("inv");
+    inv.addActionListener(this);
+    inv.setFont(new Font("Arial",Font.PLAIN,20));
+    inv.setFocusable(false);
+    inv.setBounds(300, 100, 100, 100);
     showRes = new JTextField();
 		showRes.setBounds(50,25,300,50);
 		showRes.setFont(myFont);
@@ -116,6 +122,7 @@ public class Matrix extends Calculator {
     frame2.add(somma);
     frame2.add(diff);
     frame2.add(molt);
+    frame2.add(inv);
     isMat1On = false;
     isMat2On = false;
     isResOn = false;
@@ -373,6 +380,21 @@ public class Matrix extends Calculator {
       }catch(IllegalArgumentException exc){
         showRes.setText("eccezzione");
       }
+    }
+
+    if(e.getSource() == inv){
+
+      try{
+        if(isMat1On && memory[0] != null){
+          memory[2] = memory[0].matInv();
+          memoryPair[2] = new Pair(memory[2].getRows(),memory[2].getCols());
+        }else if(isMat2On && memory[1] != null){
+          memory[2] = memory[1].matInv();
+          memoryPair[2] = new Pair(memory[2].getRows(),memory[2].getCols());
+        }
+        }catch(IllegalArgumentException exc){
+          showRes.setText("matrice non invertibile");
+        }
     }
 
     
