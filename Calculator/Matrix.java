@@ -6,22 +6,9 @@ import java.awt.event.*;
 o su entrambe, il pulsante show mostra una delle 3 matrici cosa ha memorizzato in quel momento */
 public class Matrix extends Calculator {
 
-  public JFrame inFrame;
-  public JTextField textfield3;
-  public JButton confirm2;
-  public JLabel indicazioni;
-  public JButton back2;
-
-  public JFrame tempFrame;
-  public JTextField textfieldRig;
-  public JTextField textfieldCol;
-  public JButton backTemp;
-  public JButton confirm;
-  public JLabel scrittaRig;
-  public JLabel scrittaCol;
-
-  public boolean isMat1On, isMat2On, isResOn;
+  // frame della calcolatrice di matrici
   public JFrame frame2;
+  public boolean isMat1On, isMat2On, isResOn;
   public JButton back, add;
   public JButton mat1, mat2, matRes;
   public JButton rango, det;
@@ -31,84 +18,113 @@ public class Matrix extends Calculator {
   public JPanel showMatPanel;
   public JButton showMat;
 
-  public int index = 0;
+  // frame di inserimento righe e colonne della matrice che si vuole inserire
+  public JFrame tempFrame;
+  public JTextField textfieldRig;
+  public JTextField textfieldCol;
+  public JButton backTemp;
+  public JButton confirm;
+  public JLabel scrittaRig;
+  public JLabel scrittaCol;
 
+  // frame di inserimento dei valori che si vogliono immettere nella matrice
+  public JFrame inFrame;
+  public JTextField textfield3;
+  public JButton confirm2;
+  public JLabel indicazioni;
+  public JButton back2;
+
+  // array dove ho memorizzato gli oggetti della classe Matrice e le loro
+  // granezze(righe e colonne)
+  public int index = 0;
   Matrice[] memory = new Matrice[3];
   Pair[] memoryPair = new Pair[3];
 
   Matrix() {
-    // Calculator calc = new Calculator();
 
+    // setting del frame della calcolatrice di matrici
     frame2 = new JFrame("Matrix");
     frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame2.setSize(440, 620);
     frame2.setLayout(null);
+    // bottone back per tornare indietro
     back = new JButton("back");
     back.addActionListener(this);
     back.setFont(new Font("Arial", Font.PLAIN, 20));
-    ;
     back.setFocusable(false);
     back.setBounds(50, 100, 100, 100);
+    // bottone show per mostrare i valori di una matrice
     showMat = new JButton("show");
     showMat.addActionListener(this);
     showMat.setFont(new Font("Arial", Font.PLAIN, 20));
-    ;
     showMat.setFocusable(false);
     showMat.setBounds(300, 350, 100, 100);
+    // mat1 rappresenta la prima matrice
     mat1 = new JButton("mat1");
     mat1.addActionListener(this);
     mat1.setFont(new Font("Arial", Font.PLAIN, 20));
     mat1.setFocusable(false);
     mat1.setBounds(50, 225, 100, 100);
+    // mat2 rappresenta la seconda matrice
     mat2 = new JButton("mat2");
     mat2.addActionListener(this);
     mat2.setFont(new Font("Arial", Font.PLAIN, 20));
     mat2.setFocusable(false);
     mat2.setBounds(175, 225, 100, 100);
+    // res per mostrare il risultato
     matRes = new JButton("Res");
     matRes.addActionListener(this);
     matRes.setFont(new Font("Arial", Font.PLAIN, 20));
     matRes.setFocusable(false);
     matRes.setBounds(300, 225, 100, 100);
+    // bottone percalcolo del rango
     rango = new JButton("rango");
     rango.addActionListener(this);
     rango.setFont(new Font("Arial", Font.PLAIN, 20));
     rango.setFocusable(false);
     rango.setBounds(50, 350, 100, 100);
+    // bottone per calcolo del determinante
     det = new JButton("det");
     det.addActionListener(this);
     det.setFont(new Font("Arial", Font.PLAIN, 20));
     det.setFocusable(false);
     det.setBounds(175, 350, 100, 100);
+    // bottone per editare una matrice
     add = new JButton("edit");
     add.addActionListener(this);
     add.setFont(new Font("Arial", Font.PLAIN, 20));
     add.setFocusable(true);
     add.setBounds(175, 100, 100, 100);
+    // bottone per la somma fra 2 matrici
     somma = new JButton("+");
     somma.addActionListener(this);
     somma.setFont(new Font("Arial", Font.PLAIN, 20));
     somma.setFocusable(false);
     somma.setBounds(50, 475, 100, 100);
+    // bottone per la differernza fra 2 matrici
     diff = new JButton("-");
     diff.addActionListener(this);
     diff.setFont(new Font("Arial", Font.PLAIN, 20));
     diff.setFocusable(false);
     diff.setBounds(175, 475, 100, 100);
+    // bottone per il prodotto fra 2 matrici
     molt = new JButton("*");
     molt.addActionListener(this);
     molt.setFont(new Font("Arial", Font.PLAIN, 20));
     molt.setFocusable(false);
     molt.setBounds(300, 475, 100, 100);
+    // bottone per l'inversa di una matrice
     inv = new JButton("inv");
     inv.addActionListener(this);
     inv.setFont(new Font("Arial", Font.PLAIN, 20));
     inv.setFocusable(false);
     inv.setBounds(300, 100, 100, 100);
+    // setting del textfield per mostrare risultati numerici
     showRes = new JTextField();
     showRes.setBounds(50, 25, 300, 50);
     showRes.setFont(myFont);
     showRes.setEditable(false);
+    // aggiungo le varie componenti al frame
     frame2.add(showRes);
     frame2.add(back);
     frame2.add(add);
@@ -127,33 +143,48 @@ public class Matrix extends Calculator {
     isMat2On = false;
     isResOn = false;
 
-    textfieldRig = new JTextField();
-    textfieldRig.setVisible(false);
-    textfieldRig.setBounds(25, 100, 300, 50);
-    textfieldRig.setFont(new Font("Arial", Font.PLAIN, 20));
-    textfieldCol = new JTextField();
-    textfieldCol.setVisible(false);
-    textfieldCol.setBounds(25, 250, 300, 50);
-    textfieldCol.setFont(new Font("Arial", Font.PLAIN, 20));
-    String rig = "inserisci numero di righe";
-    String col = "inserisci numero di colonne";
-    scrittaRig = new JLabel(rig);
-    scrittaRig.setBounds(25, 25, 300, 50);
-    scrittaCol = new JLabel(col);
-    scrittaCol.setBounds(25, 175, 300, 50);
-    confirm = new JButton("vai");
-    confirm.addActionListener(this);
-    confirm.setFocusable(true);
-    confirm.setBounds(50, 500, 100, 50);
-    backTemp = new JButton("back");
-    backTemp.addActionListener(this);
-    backTemp.setFocusable(false);
-    backTemp.setBounds(300, 500, 100, 50);
+    // setting del frame temporaneo che permette all'utante l'inserimento di righe e
+    // collonne della matrice
     tempFrame = new JFrame("temp");
     tempFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     tempFrame.setSize(420, 600);
     tempFrame.setLayout(null);
     tempFrame.setVisible(false);
+    // primo textfield dove avverrà l'inserimento numero di righe
+    textfieldRig = new JTextField();
+    textfieldRig.setVisible(false);
+    textfieldRig.setBounds(25, 100, 300, 50);
+    textfieldRig.setFont(new Font("Arial", Font.PLAIN, 20));
+    // secondo textfield dove avverrà l'inserimento numero di colonne
+    textfieldCol = new JTextField();
+    textfieldCol.setVisible(false);
+    textfieldCol.setBounds(25, 250, 300, 50);
+    textfieldCol.setFont(new Font("Arial", Font.PLAIN, 20));
+    // scritta messa accanto al primo textfield per righe
+    String rig = "inserisci numero di righe";
+    scrittaRig = new JLabel(rig);
+    scrittaRig.setBounds(25, 25, 300, 50);
+    // scritta messa accanto al secondo textfield per colonne
+    String col = "inserisci numero di colonne";
+    scrittaCol = new JLabel(col);
+    scrittaCol.setBounds(25, 175, 300, 50);
+    // pulsante di conferma della scelta
+    confirm = new JButton("vai");
+    confirm.addActionListener(this);
+    confirm.setFocusable(true);
+    confirm.setBounds(50, 500, 100, 50);
+    /*
+     * confirm.addActionListener(new ActionListener() {
+     * 
+     * @Override public void actionPerformed(ActionEvent e) { // TODO con tutti }
+     * });
+     */
+    // pulsante di back per ritpornare in frame2
+    backTemp = new JButton("back");
+    backTemp.addActionListener(this);
+    backTemp.setFocusable(false);
+    backTemp.setBounds(300, 500, 100, 50);
+    // aggiunta al tempFrame di tutti i suoi componenti
     tempFrame.add(textfieldRig);
     tempFrame.add(textfieldCol);
     tempFrame.add(confirm);
@@ -161,30 +192,22 @@ public class Matrix extends Calculator {
     tempFrame.add(scrittaCol);
     tempFrame.add(backTemp);
 
-    back2 = new JButton("back");
-    back2.addActionListener(this);
-    back2.setFocusable(false);
-    back2.setBounds(300, 500, 100, 50);
-    textfield3 = new JTextField();
-    textfield3.setVisible(false);
-    textfield3.setBounds(25, 100, 300, 50);
-    textfield3.setFont(new Font("Arial", Font.PLAIN, 20));
-    String s2 = "INDICAZIONI";
-    indicazioni = new JLabel(s2);
-    indicazioni.setBounds(25, 25, 300, 50);
-    confirm2 = new JButton("GO");
-    confirm2.addActionListener(this);
-    confirm2.setFocusable(true);
-    confirm2.setBounds(50, 500, 100, 50);
     inFrame = new JFrame("input");
-    inFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    inFrame.setSize(420, 600);
-    inFrame.setLayout(null);
-    inFrame.setVisible(false);
-    inFrame.add(textfield3);
-    inFrame.add(confirm2);
-    inFrame.add(indicazioni);
-    inFrame.add(back2);
+    /*
+     * inFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); inFrame.setSize(420,
+     * 600); inFrame.setLayout(null); inFrame.setVisible(false);
+     * 
+     * back2 = new JButton("back"); back2.addActionListener(this);
+     * back2.setFocusable(false); back2.setBounds(300,500,100,50); textfield3 = new
+     * JTextField(); textfield3.setVisible(false); textfield3.setBounds(25, 100,
+     * 300, 50); textfield3.setFont(new Font("Arial",Font.PLAIN,20)); String s2 =
+     * "INDICAZIONI"; indicazioni = new JLabel(s2); indicazioni.setBounds(25, 25,
+     * 300, 50); confirm2 = new JButton("GO"); confirm2.addActionListener(this);
+     * confirm2.setFocusable(true); confirm2.setBounds(50, 500, 100, 50);
+     * 
+     * inFrame.add(textfield3); inFrame.add(confirm2); inFrame.add(indicazioni);
+     * inFrame.add(back2);
+     */
 
   }
 
@@ -354,7 +377,7 @@ public class Matrix extends Calculator {
         memory[2] = memory[0].somma(memory[1]);
         memoryPair[2] = new Pair(memory[2].getRows(), memory[2].getCols());
       } catch (IllegalArgumentException exc) {
-        showRes.setText("eccezzione");
+        showRes.setText("eccezione");
       }
     }
 
@@ -363,7 +386,7 @@ public class Matrix extends Calculator {
         memory[2] = memory[0].differenza(memory[1]);
         memoryPair[2] = new Pair(memory[2].getRows(), memory[2].getCols());
       } catch (IllegalArgumentException exc) {
-        showRes.setText("eccezzione");
+        showRes.setText("eccezione");
       }
     }
 
@@ -372,7 +395,7 @@ public class Matrix extends Calculator {
         memory[2] = memory[0].prodotto(memory[1]);
         memoryPair[2] = new Pair(memory[2].getRows(), memory[2].getCols());
       } catch (IllegalArgumentException exc) {
-        showRes.setText("eccezzione");
+        showRes.setText("eccezione");
       }
     }
 
@@ -410,8 +433,32 @@ public class Matrix extends Calculator {
 
       System.out.println(memoryPair[index].getRiga() + " " + memoryPair[index].getColonna());
       tempFrame.setVisible(false);
+
+      inFrame.setSize(600, 600);
+
+      // griglia di bottoni
+      GridLayout gl = new GridLayout(righe, colonne, 10, 10);
+
+      showMatPanel = new JPanel();
+      showMatPanel.setLayout(gl);
+      showMatPanel.setSize(200, 200);
+      System.out.println(gl instanceof LayoutManager);
+      for (int i = 0; i < righe; i++) {
+        for (int j = 0; j < colonne; j++) {
+          JButton showMatButton = new JButton();
+          showMatButton.setFocusable(true);
+          showMatButton.setVisible(true);
+          showMatPanel.add(showMatButton);
+        }
+      }
+
+      JButton back = new JButton("back");
+      back.setBounds(25, 325, 100, 100);
+      inFrame.add(back);
+
+      inFrame.add(showMatPanel);
       inFrame.setVisible(true);
-      textfield3.setVisible(true);
+      // textfield3.setVisible(true);
 
     }
     if (e.getSource() == back2) {
